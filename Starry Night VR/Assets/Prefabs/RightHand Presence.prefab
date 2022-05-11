@@ -45,4 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controllerCharacteristics: 576
   HandPrefab: {fileID: 5686134208185362930, guid: 1fd3a7c43c8190f4d8c167ebde694364, type: 3}
-  StarPrefab: {fileID: 2174781621473075003, guid: 087c3d7ddcbe977419dc81943c1a131f, type: 3}
+  StarPrefab:
+  - {fileID: 6006438784685079024, guid: ee37a3b826478eb4097116c133c33565, type: 3}
+  - {fileID: 95481525697917031, guid: eb6dd0c0bfe393649bee081fea52be91, type: 3}
+  - {fileID: 2644700691534702557, guid: 7d36468589c4ef245a1df4f844f06bf9, type: 3}
