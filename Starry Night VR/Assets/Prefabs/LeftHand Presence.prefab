@@ -49,3 +49,4 @@ MonoBehaviour:
   - {fileID: 6006438784685079024, guid: ee37a3b826478eb4097116c133c33565, type: 3}
   - {fileID: 95481525697917031, guid: eb6dd0c0bfe393649bee081fea52be91, type: 3}
   - {fileID: 2644700691534702557, guid: 7d36468589c4ef245a1df4f844f06bf9, type: 3}
+  isRight: 0

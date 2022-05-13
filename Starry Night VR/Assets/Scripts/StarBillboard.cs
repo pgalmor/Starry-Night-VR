@@ -9,7 +9,10 @@ public class StarBillboard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(main == null)
+        {
+            main = GameObject.Find("Main Camera").GetComponent<Camera>();
+        }
     }
 
     // Update is called once per frame

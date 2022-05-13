@@ -8,6 +8,7 @@ public class HandPresence : MonoBehaviour
     public InputDeviceCharacteristics controllerCharacteristics;
     public GameObject HandPrefab;
     public GameObject[] StarPrefab;
+    public bool isRight = true;
 
     private InputDevice targetDevice;
     private GameObject spawnedHand;
@@ -64,14 +65,21 @@ public class HandPresence : MonoBehaviour
             if(targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue))
             {
                 Debug.Log("Trigger Value: " + triggerValue);
-                if(triggerValue >= 0.9999 && hasShot == false)
+                if (isRight)
                 {
-                    ShootStar();
-                    hasShot = true;
+                    if (triggerValue >= 0.9999 && hasShot == false)
+                    {
+                        ShootStar();
+                        hasShot = true;
+                    }
+                    else if (triggerValue < 0.9999 && hasShot == true)
+                    {
+                        hasShot = false;
+                    }
                 }
-                else if(triggerValue < 0.9999 && hasShot == true)
+                else
                 {
-                    hasShot = false;
+
                 }
             }
         }
@@ -81,11 +89,18 @@ public class HandPresence : MonoBehaviour
     {
         Vector3 direction = finalLinePos - initLinePos;
         //Physics.Raycast(transform.position, direction, 20);
-        Vector3 newSpawnPos = transform.position + direction.normalized * 5;
+        Vector3 newSpawnPos = transform.position + direction.normalized * 80;
         Quaternion quat = new Quaternion(1, 0, 0, 0);
 
         int rand = Random.Range(0, StarPrefab.Length);
-        Instantiate(StarPrefab[rand], newSpawnPos, quat);
+        float randScale = Random.Range(50, 150);
+        GameObject star = Instantiate(StarPrefab[rand], newSpawnPos, quat);
+        star.transform.localScale = new Vector3(randScale, randScale, randScale);
         Debug.Log("Star Shot!");
+    }
+
+    void ShootWind()
+    {
+
     }
 }
