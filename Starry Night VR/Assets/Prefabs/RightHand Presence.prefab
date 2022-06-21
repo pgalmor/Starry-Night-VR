@@ -44,8 +44,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controllerCharacteristics: 576
-  HandPrefab: {fileID: 5686134208185362930, guid: 1fd3a7c43c8190f4d8c167ebde694364, type: 3}
+  HandPrefab: {fileID: 5686134208185362930, guid: 1fd3a7c43c8190f4d8c167ebde694364,
+    type: 3}
   StarPrefab:
   - {fileID: 6006438784685079024, guid: ee37a3b826478eb4097116c133c33565, type: 3}
   - {fileID: 95481525697917031, guid: eb6dd0c0bfe393649bee081fea52be91, type: 3}
   - {fileID: 2644700691534702557, guid: 7d36468589c4ef245a1df4f844f06bf9, type: 3}
+  WindPrefab: {fileID: 3984586657617977135, guid: c5a88851c0961a94b940a7f1f45b9ea1,
+    type: 3}
+  isRight: 1
+  lineMat: {fileID: 0}
+  cam: {fileID: 0}
+  particlePrefab: {fileID: 200493665567545211, guid: be50143ac68c1ea48876772eeb843f31,
+    type: 3}
+  explosionParticlePrefab: {fileID: 762613638831153741, guid: 7977926e03c25fd4db39dacf4026179e,
+    type: 3}
