@@ -44,6 +44,11 @@ public class HandPresence : MonoBehaviour
     GameObject explosionEmbers;
     GameObject explosionShock;
     ParticleSystem embersPS;*/
+    GameObject sphere;
+    Material sphereMat;
+    Light dirLight;
+    bool gameStarted;
+    bool transitionStarted;
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +60,11 @@ public class HandPresence : MonoBehaviour
         {
             mainCam = GameObject.Find("Main Camera").GetComponent<Camera>();
         }
+        sphere = GameObject.Find("Sphere");
+        sphereMat = sphere.GetComponent<MeshRenderer>().material;
+        dirLight = GameObject.Find("Directional Light").GetComponent<Light>();
+        gameStarted = false;
+        transitionStarted = false;
     }
 
     void TryInitialize()
@@ -107,43 +117,63 @@ public class HandPresence : MonoBehaviour
 
             if(targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue))
             {
-                Debug.Log("Trigger Value: " + triggerValue);
-                if (isRight)
+                //Debug.Log("Trigger Value: " + triggerValue);
+                if (gameStarted == false)
                 {
-                    if (triggerValue >= 0.9999 && hasShot == false)
+                    if(triggerValue >= 0.5 && transitionStarted == false) { transitionStarted = true; }
+                    if (transitionStarted)
                     {
-                        ShootStar();
-                        
-                        hasShot = true;
-                    }
-                    else if (triggerValue < 0.9999 && hasShot == true)
-                    {
-                        hasShot = false;
+                        Debug.Log("Transition Started");
+                        Color c = sphereMat.color;
+                        Color textC = sphere.transform.Find("PressText").GetComponent<TextMesh>().color;
+                        if (c.a > 0) { c.a -= 0.01f; sphereMat.color = c; textC.a -= 0.01f; sphere.transform.Find("PressText").GetComponent<TextMesh>().color = textC; }
+                        if(dirLight.intensity < 1) { dirLight.intensity += 0.05f; }
+                        if(c.a <= 0 && dirLight.intensity >= 1) { sphere.SetActive(false); gameStarted = true; }
                     }
                 }
                 else
                 {
-                    if (triggerValue >= 0.9999 && startWind == false)
+                    Debug.Log("Game Starter");
+                    if (isRight)
                     {
-                        startWind = true;
-                        lineGO = new GameObject();
-                        Vector3 direction = finalLinePos - initLinePos;
-                        pointerPos = transform.position + direction.normalized * 550;
-
-                        LR = lineGO.AddComponent<LineRenderer>();
-                        LR.startWidth = 0.2f;
-                        LR.material = lineMat;
-
+                        if (triggerValue >= 0.8 && hasShot == false)
+                        {
+                            ShootStar();
+                            //OVRHaptics.RightChannel.Preempt(starHapticsClip);
+                            //OVRInput.SetControllerVibration(2, 255, OVRInput.Controller.RTouch);
+                            targetDevice.SendHapticImpulse(0, 0.5f, 0.5f);
+                            hasShot = true;
+                        }
+                        else if (triggerValue < 0.8 && hasShot == true)
+                        {
+                            hasShot = false;
+                        }
                     }
-                    else if (triggerValue < 0.9999 && startWind == true)
+                    else
                     {
-                        startWind = false;
-                        Destroy(lastLinePoint.gameObject);
-                        currentIndex = 0;
+                        if (triggerValue >= 0.9999 && startWind == false)
+                        {
+                            startWind = true;
+                            lineGO = new GameObject();
+                            Vector3 direction = finalLinePos - initLinePos;
+                            pointerPos = transform.position + direction.normalized * 550;
+
+                            LR = lineGO.AddComponent<LineRenderer>();
+                            LR.startWidth = 0.2f;
+                            LR.material = lineMat;
+
+                        }
+                        else if (triggerValue < 0.9999 && startWind == true)
+                        {
+                            startWind = false;
+                            Destroy(lastLinePoint.gameObject);
+                            currentIndex = 0;
+                        }
                     }
                 }
+                
 
-                if (triggerValue > 0.05)
+                if (triggerValue > 0.02)
                 {
                     particleOrb.SetActive(true);
                 }
@@ -168,7 +198,7 @@ public class HandPresence : MonoBehaviour
             if (startWind)
             {
                 Vector3 direction = finalLinePos - initLinePos;
-                Vector3 tmpPointerPos = transform.position + direction.normalized * 550;
+                Vector3 tmpPointerPos = transform.position + direction.normalized * 650;
                 Vector3 dist = pointerPos - tmpPointerPos;
                 float dst_sqrMag = dist.sqrMagnitude;
                 if(dst_sqrMag > 160f)
@@ -189,6 +219,8 @@ public class HandPresence : MonoBehaviour
                     currentIndex++;
                     LR.positionCount = currentIndex + 1;
                     LR.SetPosition(currentIndex, tmpPointerPos);
+
+                    targetDevice.SendHapticImpulse(0, 0.5f, 0.5f);
                 }
             }
         }
@@ -198,8 +230,8 @@ public class HandPresence : MonoBehaviour
     {
         Vector3 direction = finalLinePos - initLinePos;
         //Physics.Raycast(transform.position, direction, 20);
-        Vector3 particleSpawnPos = transform.position + direction.normalized * 450;
-        Vector3 newSpawnPos = transform.position + direction.normalized * 500;
+        Vector3 particleSpawnPos = transform.position + direction.normalized * 550;
+        Vector3 newSpawnPos = transform.position + direction.normalized * 600;
         Quaternion quat = new Quaternion(1, 0, 0, 0);
 
         int rand = Random.Range(0, StarPrefab.Length);
@@ -215,6 +247,8 @@ public class HandPresence : MonoBehaviour
 
         GameObject star = Instantiate(StarPrefab[rand], newSpawnPos, quat);
         star.transform.localScale = new Vector3(randScale, randScale, randScale);
+        float n = 0.1f - (((randScale - 75) * 0.1f) / 125);
+        star.GetComponent<AudioSource>().pitch = n + 0.95f;
         Debug.Log("Star Shot!");
     }
 
