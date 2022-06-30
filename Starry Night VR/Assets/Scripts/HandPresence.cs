@@ -136,7 +136,7 @@ public class HandPresence : MonoBehaviour
                     Debug.Log("Game Starter");
                     if (isRight)
                     {
-                        if (triggerValue >= 0.8 && hasShot == false)
+                        if (triggerValue >= 0.9999 && hasShot == false)
                         {
                             ShootStar();
                             //OVRHaptics.RightChannel.Preempt(starHapticsClip);
@@ -144,7 +144,7 @@ public class HandPresence : MonoBehaviour
                             targetDevice.SendHapticImpulse(0, 0.5f, 0.5f);
                             hasShot = true;
                         }
-                        else if (triggerValue < 0.8 && hasShot == true)
+                        else if (triggerValue < 0.9999 && hasShot == true)
                         {
                             hasShot = false;
                         }
@@ -161,6 +161,7 @@ public class HandPresence : MonoBehaviour
                             LR = lineGO.AddComponent<LineRenderer>();
                             LR.startWidth = 0.2f;
                             LR.material = lineMat;
+                            LR.startWidth = 0;
 
                         }
                         else if (triggerValue < 0.9999 && startWind == true)
@@ -213,7 +214,6 @@ public class HandPresence : MonoBehaviour
 
                     lastLinePoint = Instantiate(WindPrefab, LR.GetPosition(currentIndex), Quaternion.identity, lineGO.transform);
                     lastLinePoint.transform.localScale = new Vector3(10, 10, 10);
-                    //lastLinePoint.transform.LookAt(new Vector3(lastLinePoint.transform.position.x, lastLinePoint.transform.position.y, mainCam.transform.position.z));
 
                     pointerPos = tmpPointerPos;
                     currentIndex++;

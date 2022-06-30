@@ -1001,17 +1001,17 @@ PrefabInstance:
     - target: {fileID: 8462437844836305002, guid: be50143ac68c1ea48876772eeb843f31,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0212
+      value: -0.0371
       objectReference: {fileID: 0}
     - target: {fileID: 8462437844836305002, guid: be50143ac68c1ea48876772eeb843f31,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0136
+      value: -0.005
       objectReference: {fileID: 0}
     - target: {fileID: 8462437844836305002, guid: be50143ac68c1ea48876772eeb843f31,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0481
+      value: 0.0342
       objectReference: {fileID: 0}
     - target: {fileID: 8462437844836305002, guid: be50143ac68c1ea48876772eeb843f31,
         type: 3}
@@ -1047,6 +1047,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8869636830663222597, guid: be50143ac68c1ea48876772eeb843f31,
+        type: 3}
+      propertyPath: LightsModule.color
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8869636830663222597, guid: be50143ac68c1ea48876772eeb843f31,
         type: 3}
